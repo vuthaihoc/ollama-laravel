@@ -12,7 +12,7 @@ class ModelService
     /**
      * Base URL for the API.
      */
-    protected $baseUrl;
+    public $baseUrl;
 
     public function __construct()
     {

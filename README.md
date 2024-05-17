@@ -12,7 +12,7 @@ https://github.com/cloudstudio/ollama-laravel/releases/tag/v1.0.5
 ## Installation
 
 ```bash
-composer require cloudstudio/ollama-laravel
+composer require hocvt/ollama-laravel
 ```
 
 ## Configuration
@@ -44,6 +44,7 @@ use Cloudstudio\Ollama\Facades\Ollama;
 $response = Ollama::agent('You are a weather expert...')
     ->prompt('Why is the sky blue?')
     ->model('llama2')
+    ->baseUrl('http://127.0.0.1:11434')
     ->options(['temperature' => 0.8])
     ->stream(false)
     ->ask();

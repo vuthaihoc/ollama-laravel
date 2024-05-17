@@ -17,7 +17,7 @@ trait MakesHttpRequests
      */
     protected function sendRequest(string $urlSuffix, array $data, string $method = 'post')
     {
-        $url = config('ollama-laravel.url') . $urlSuffix;
+        $url = $this->modelService->baseUrl . $urlSuffix;
 
         if (!empty($data['stream']) && $data['stream'] === true) {
             $client = new Client();
