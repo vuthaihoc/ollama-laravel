@@ -32,7 +32,19 @@ trait MakesHttpRequests
 
             return $response;
         } else {
-            $response = Http::timeout(config('ollama-laravel.connection.timeout'))->$method($url, $data);
+            if (is_array($this->clientAuth)) {
+                $response = Http::timeout(config('ollama-laravel.connection.timeout'))
+                    ->withBasicAuth(...$this->clientAuth)
+                    ->$method($url, $data);
+            } elseif ($this->clientAuth) {
+                $response = Http::timeout(config('ollama-laravel.connection.timeout'))
+                    ->withHeader('Authorization', 'Bearer ' . $this->clientAuth)
+                    ->$method($url, $data);
+            } else {
+                $response = Http::timeout(config('ollama-laravel.connection.timeout'))
+                    ->$method($url, $data);
+            }
+
             return $response->json();
         }
     }
@@ -40,6 +52,7 @@ trait MakesHttpRequests
     public function setClientAuth(string|array $auth)
     {
         $this->clientAuth = $auth;
+        return $this;
     }
 
     public function getClientAuth()
