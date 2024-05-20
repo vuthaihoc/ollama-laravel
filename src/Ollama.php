@@ -112,6 +112,17 @@ class Ollama
     }
 
     /**
+     * Set Client Auth
+     * @see https://docs.guzzlephp.org/en/stable/request-options.html#auth
+     * @param string|array $auth
+     * @return void
+     */
+    public function auth(string|array $auth){
+        $this->setClientAuth($auth);
+        $this->modelService->setClientAuth($auth);
+    }
+
+    /**
      * Sets the prompt for generation.
      *
      * @param string $prompt

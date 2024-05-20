@@ -7,6 +7,8 @@ use GuzzleHttp\Client;
 
 trait MakesHttpRequests
 {
+    protected null|string|array $clientAuth = null;
+
     /**
      * Sends an HTTP request to the API and returns the response.
      *
@@ -22,8 +24,9 @@ trait MakesHttpRequests
         if (!empty($data['stream']) && $data['stream'] === true) {
             $client = new Client();
             $response = $client->request($method, $url, [
-                'json' => $data,
-                'stream' => true,
+                'auth'    => $this->clientAuth,
+                'json'    => $data,
+                'stream'  => true,
                 'timeout' => config('ollama-laravel.connection.timeout'),
             ]);
 
@@ -32,5 +35,15 @@ trait MakesHttpRequests
             $response = Http::timeout(config('ollama-laravel.connection.timeout'))->$method($url, $data);
             return $response->json();
         }
+    }
+
+    public function setClientAuth(string|array $auth)
+    {
+        $this->clientAuth = $auth;
+    }
+
+    public function getClientAuth()
+    {
+        return $this->clientAuth;
     }
 }
