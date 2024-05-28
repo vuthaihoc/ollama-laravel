@@ -19,7 +19,11 @@ trait MakesHttpRequests
      */
     protected function sendRequest(string $urlSuffix, array $data, string $method = 'post')
     {
-        $url = $this->modelService->baseUrl . $urlSuffix;
+        if($this instanceof ModelService){
+            $url = $this->baseUrl . $urlSuffix;
+        }else{
+            $url = $this->modelService->baseUrl . $urlSuffix;
+        }
 
         if (!empty($data['stream']) && $data['stream'] === true) {
             $client = new Client();
